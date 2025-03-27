@@ -1,0 +1,21 @@
+# vercal
+.vercal
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# Visual Studio Code
+.vscode/*
+!.vscode/settings.json
+
+# misc
+.DS_Store
+* .pem
+
+# production
+/build
+
+# local env files
+.env*
+node_modules
