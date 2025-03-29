@@ -17,5 +17,5 @@ next-env.d.ts
 /build
 
 # local env files
-.env*
+*.env*
 node_modules
