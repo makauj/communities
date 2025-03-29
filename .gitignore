@@ -1,6 +1,3 @@
-# vercal
-.vercal
-
 # typescript
 *.tsbuildinfo
 next-env.d.ts
@@ -19,3 +16,7 @@ next-env.d.ts
 # local env files
 *.env*
 node_modules
+
+#debug
+*.tsbuildinfo
+next-env.d.ts
