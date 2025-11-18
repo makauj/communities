@@ -1,3 +1,4 @@
+
 import { validateRequest } from "@/auth";
 import prisma from "@/lib/prisma";
 import streamServerClient from "@/lib/stream";
@@ -78,7 +79,7 @@ export const fileRouter = {
 
 export type AppFileRouter = typeof fileRouter;
 
-export const onUploadComplete = async (files, ctx) => {
+export const onUploadComplete = async (files: any, ctx: { userId: any; uploadId: any; }) => {
     try {
         // original processing logic (move files, create DB records, etc.)
     } catch (err) {
