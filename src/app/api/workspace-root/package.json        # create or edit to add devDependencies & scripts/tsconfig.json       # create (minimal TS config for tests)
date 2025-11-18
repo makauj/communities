@@ -1,0 +1,37 @@
+{
+  "devDependencies": {
+    "vitest": "^0.0.0"
+  },
+  "scripts": {
+    "test": "vitest"
+  }
+}
+
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["tests/**/*.ts"]
+}
+
+import { defineConfig } from 'vitest/config';
+
+export default defineConfig({
+  test: {
+    environment: 'node',
+    coverage: {
+      reporter: ['text', 'json'],
+    },
+  },
+});
+
+import { test, expect } from 'vitest';
+
+test('hello world', () => {
+  expect('hello').toBe('hello');
+});

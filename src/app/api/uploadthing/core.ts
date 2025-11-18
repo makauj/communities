@@ -77,3 +77,24 @@ export const fileRouter = {
 } satisfies FileRouter;
 
 export type AppFileRouter = typeof fileRouter;
+
+export const onUploadComplete = async (files, ctx) => {
+    try {
+        // original processing logic (move files, create DB records, etc.)
+    } catch (err) {
+        // Log useful context for debugging without leaking secrets
+        // Replace console.error with your logger if available (pino/winston)
+        console.error('[uploadthing:onUploadComplete] error processing upload', {
+            error: err instanceof Error ? { message: err.message, stack: err.stack } : err,
+            files,
+            ctx: {
+                // include only non-sensitive context info
+                userId: ctx?.userId ?? null,
+                uploadId: ctx?.uploadId ?? null,
+            },
+        });
+
+        // Re-throw so the caller/UploadThing can react (mark failure) or handle retries
+        throw err;
+    }
+};
