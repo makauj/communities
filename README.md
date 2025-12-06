@@ -30,24 +30,28 @@ Communities is a social media application designed to connect people, foster dis
 ### Installation
 
 1. Clone the repository:
+
    ```bash
    git clone https://github.com/makauj/communities.git
    cd communities
    ```
 
 2. Install dependencies:
+
    ```bash
    npm install
    ```
 
 3. Set up environment variables:
    Create a `.env` file in the root directory and configure the following:
-   ```
+
+   ```sh
    MONGO_URI=your-mongodb-connection-string
    JWT_SECRET=your-secret-key
    ```
 
 4. Start the development server:
+
    ```bash
    npm run dev
    ```
