@@ -21,9 +21,21 @@ app.use(cors());
 app.use(express.json());
 
 // Database Connection
-mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/communities')
-    .then(() => console.log('MongoDB connected'))
-    .catch(err => console.error('MongoDB connection error:', err));
+const defaultMongoUri = process.env.MONGO_URI || 'mongodb://localhost:27017/communities';
+
+const connectDB = async (mongoUri = defaultMongoUri) => {
+    try {
+        if (mongoose.connection.readyState === 1) {
+            return;
+        }
+
+        await mongoose.connect(mongoUri);
+        console.log('MongoDB connected');
+    } catch (err) {
+        console.error('MongoDB connection error:', err);
+        throw err;
+    }
+};
 
 // Routes
 const routes = require('./routes');
@@ -38,6 +50,17 @@ io.on('connection', (socket) => {
 });
 
 const PORT = process.env.PORT || 5000;
-server.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-});
+
+if (require.main === module) {
+    connectDB()
+        .then(() => {
+            server.listen(PORT, () => {
+                console.log(`Server running on port ${PORT}`);
+            });
+        })
+        .catch(() => {
+            process.exit(1);
+        });
+}
+
+module.exports = { app, server, connectDB };

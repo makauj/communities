@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react'
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+
 function App() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  console.log("App rendering");
   useEffect(() => {
-    console.log("Fetching users...");
-    fetch('http://localhost:5000/api/users')
+    fetch(`${API_BASE_URL}/api/users`)
       .then(res => {
         if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
         return res.json();

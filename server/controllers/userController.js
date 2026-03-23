@@ -1,8 +1,5 @@
 const User = require('../models/User');
-const bcrypt = require('bcryptjs'); // Will need to install this if not included, or just store plain for now/mock
-// Actually I didn't install bcryptjs. I'll skip hashing for this simple restructure or use a placeholder.
-// The plan said "Express + Mongoose", didn't specify auth details. I'll add bcryptjs to the install list or just omitting hashing for now to keep it simple and runnable.
-// I'll stick to simple logic.
+const bcrypt = require('bcryptjs');
 
 exports.getAllUsers = async (req, res) => {
     try {
@@ -25,19 +22,29 @@ exports.getUserById = async (req, res) => {
 
 exports.createUser = async (req, res) => {
     try {
-        // Basic validation
         if (!req.body.username || !req.body.password || !req.body.email) {
             return res.status(400).json({ message: 'Missing required fields' });
         }
 
+        const existingUser = await User.findOne({
+            $or: [{ username: req.body.username }, { email: req.body.email }]
+        });
+
+        if (existingUser) {
+            return res.status(409).json({ message: 'User already exists' });
+        }
+
+        const hashedPassword = await bcrypt.hash(req.body.password, 10);
+
         const newUser = new User({
             username: req.body.username,
             email: req.body.email,
-            password: req.body.password
+            password: hashedPassword
         });
 
         const savedUser = await newUser.save();
-        res.status(201).json(savedUser);
+        const responseUser = await User.findById(savedUser._id).select('-password');
+        res.status(201).json(responseUser);
     } catch (err) {
         res.status(400).json({ message: err.message });
     }
@@ -45,11 +52,22 @@ exports.createUser = async (req, res) => {
 
 exports.updateUser = async (req, res) => {
     try {
+        const updatePayload = { ...req.body };
+
+        if (updatePayload.password) {
+            updatePayload.password = await bcrypt.hash(updatePayload.password, 10);
+        }
+
         const updatedUser = await User.findByIdAndUpdate(
             req.params.id,
-            req.body,
-            { new: true }
+            updatePayload,
+            { new: true, runValidators: true }
         ).select('-password');
+
+        if (!updatedUser) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
         res.json(updatedUser);
     } catch (err) {
         res.status(400).json({ message: err.message });
