@@ -13,10 +13,10 @@ Communities is a social media application designed to connect people, foster dis
 
 ## Tech Stack
 
-- **Frontend**: React, TypeScript, Tailwind CSS
+- **Frontend**: React (JavaScript), Vite, Tailwind CSS
 - **Backend**: Node.js, Express
 - **Database**: MongoDB
-- **Authentication**: JWT (JSON Web Tokens)
+- **Authentication**: Password hashing with bcryptjs
 - **Real-time**: Socket.IO
 
 ## Getting Started
@@ -47,7 +47,8 @@ Communities is a social media application designed to connect people, foster dis
 
    ```sh
    MONGO_URI=your-mongodb-connection-string
-   JWT_SECRET=your-secret-key
+   PORT=5000
+   VITE_API_BASE_URL=http://localhost:5000
    ```
 
 4. Start the development server:
@@ -56,7 +57,7 @@ Communities is a social media application designed to connect people, foster dis
    npm run dev
    ```
 
-5. Open your browser and navigate to `http://localhost:3000`.
+5. Open your browser and navigate to `http://localhost:5173`.
 
 ## Contributing
 
